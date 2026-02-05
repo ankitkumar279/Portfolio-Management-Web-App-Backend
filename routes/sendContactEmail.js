@@ -1,47 +1,36 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const nodemailer = require('nodemailer');
+const { Resend } = require("resend");
 
-router.post('/', async (req, res) => {
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+router.post("/", async (req, res) => {
   const { name, email, subject, message } = req.body;
 
   if (!name || !email || !message) {
-    return res.status(400).json({ error: "Please fill all required fields" });
+    return res.status(400).json({ error: "All fields required" });
   }
 
   try {
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false, // MUST be false
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS, // App password
-      },
+    await resend.emails.send({
+      from: "Portfolio Contact <onboarding@resend.dev>", // verified sender
+      to: ["ankitchahar88@gmail.com"], // your email
+      reply_to: email,
+      subject: subject || `New Contact from ${name}`,
+      html: `
+        <h2>New Contact Message</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `,
     });
 
-    // 🔍 This will throw error if Gmail blocks it
-    await transporter.verify();
+    res.status(200).json({ message: "Message sent successfully!" });
 
-    const mailOptions = {
-      from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
-      replyTo: email,
-      subject: subject || `Contact Form Message from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    return res.status(200).json({
-      message: "Message sent successfully!",
-    });
-
-  } catch (err) {
-    console.error("EMAIL ERROR FULL:", err);
-    return res.status(500).json({
-      error: "Error sending message",
-    });
+  } catch (error) {
+    console.error("RESEND ERROR:", error);
+    res.status(500).json({ error: "Failed to send email" });
   }
 });
 
