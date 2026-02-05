@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1.mb-4 #{cert && cert._id ? 'Edit Certification' : 'Add Certification'}
+
+  form(method="POST" action=cert && cert._id ? `/admin/certifications/${cert._id}?_method=PUT` : '/admin/certifications')
+    .mb-3
+      label.form-label(for="title") Title
+      input.form-control(type="text" name="title" id="title" value=cert ? cert.title : '' required)
+
+    .mb-3
+      label.form-label(for="year") Year
+      input.form-control(type="text" name="year" id="year" value=cert ? cert.year : '' required)
+
+    .mb-3
+      label.form-label(for="provider") Provider
+      input.form-control(type="text" name="provider" id="provider" value=cert ? cert.provider : '' required)
+
+    button.btn.btn-primary(type="submit") Save
+    a.btn.btn-secondary.ms-2(href="/admin/certifications") Cancel
+    

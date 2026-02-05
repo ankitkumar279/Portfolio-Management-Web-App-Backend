@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  .d-flex.justify-content-between.align-items-center.mb-4
+    h1 Tools
+    a.btn.btn-primary(href="/admin/tools/new") + Add Tool
+
+  if tools.length
+    .row.row-cols-1.row-cols-md-2.g-4
+      each tool in tools
+        .col
+          .card.shadow
+            .card-body
+              h5= tool.name
+            .card-footer.d-flex.justify-content-between
+              a.btn.btn-warning.btn-sm(href=`/admin/tools/${tool._id}/edit`) Edit
+              form(method="POST" action=`/admin/tools/${tool._id}?_method=DELETE`, style="display:inline")
+                button.btn.btn-danger.btn-sm(type="submit") Delete
+  else
+    p.text-muted No tools added yet.

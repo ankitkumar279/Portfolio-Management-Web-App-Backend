@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1.mb-4 #{tool && tool._id ? 'Edit Tool' : 'Add Tool'}
+
+  form(method="POST" action=tool && tool._id ? `/admin/tools/${tool._id}?_method=PUT` : '/admin/tools')
+    .mb-3
+      label.form-label(for="name") Name
+      input.form-control(type="text" name="name" id="name" value=tool ? tool.name : '' required)
+    button.btn.btn-primary(type="submit") Save
+    a.btn.btn-secondary.ms-2(href="/admin/tools") Cancel

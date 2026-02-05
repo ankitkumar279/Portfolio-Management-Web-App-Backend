@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  h1 Dashboard
+  .dashboard-cards
+    .row
+      .col-md-3
+        .card.shadow
+          .card-body.text-center
+            i.fas.fa-project-diagram.fa-2x.text-primary.mb-2
+            h5 Projects
+            p #{projectCount || 0} Total
+      .col-md-3
+        .card.shadow
+          .card-body.text-center
+            i.fas.fa-tools.fa-2x.text-success.mb-2
+            h5 Tools
+            p #{toolCount || 0} Total
+      .col-md-3
+        .card.shadow
+          .card-body.text-center
+            i.fas.fa-certificate.fa-2x.text-warning.mb-2
+            h5 Certifications
+            p #{certCount || 0} Total
+      .col-md-3
+        .card.shadow
+          .card-body.text-center
+            i.fas.fa-users.fa-2x.text-info.mb-2
+            h5 Skills
+            p #{skillCount || 0} Total

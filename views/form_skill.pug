@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  h1 #{skill && skill._id ? 'Edit Skill' : 'Add New Skill'}
+
+  form(method="POST" action=skill && skill._id ? `/admin/skills/${skill._id}?_method=PUT` : '/admin/skills')
+    .mb-3
+      label.form-label(for="name") Skill Name
+      input.form-control(type="text" name="name" id="name" placeholder="Enter skill name" required value=skill ? skill.name : '')
+    
+    .mb-3
+      label.form-label(for="level") Level
+      select.form-select(name="level" id="level")
+        option(value="") Select Level
+        option(value="Beginner" selected=skill && skill.level=='Beginner') Beginner
+        option(value="Intermediate" selected=skill && skill.level=='Intermediate') Intermediate
+        option(value="Advanced" selected=skill && skill.level=='Advanced') Advanced
+
+    button.btn.btn-success(type="submit") #{skill && skill._id ? 'Update Skill' : 'Save Skill'}
+    a.btn.btn-secondary.ms-2(href="/admin/skills") Cancel

@@ -1,0 +1,53 @@
+extends layout
+
+block content
+  h1 Contact Info
+
+  // Toast container in center
+  div#toastContainer
+
+  form(method="POST" onsubmit="return showToast()")
+    .mb-3
+      label.form-label(for="email") Email
+      input.form-control(type="email" name="email" id="email" value=info.email || '' required)
+    .mb-3
+      label.form-label(for="phone") Phone
+      input.form-control(type="text" name="phone" id="phone" value=info.phone || '' required)
+    .mb-3
+      label.form-label(for="location") Location
+      input.form-control(type="text" name="location" id="location" value=info.location || '' required)
+    button.btn.btn-primary(type="submit") Save
+
+  script.
+    function showToast() {
+      const toastContainer = document.getElementById('toastContainer');
+      
+      // Remove existing toast if any
+      toastContainer.innerHTML = '';
+
+      const toast = document.createElement('div');
+      toast.innerText = 'Contact info saved successfully!';
+
+      // Apply styling to center and override Bootstrap defaults
+      toast.style.position = 'fixed';
+      toast.style.top = '50%';
+      toast.style.left = '50%';
+      toast.style.transform = 'translate(-50%, -50%)';
+      toast.style.backgroundColor = '#28a745'; // Bootstrap success green
+      toast.style.color = 'white';
+      toast.style.padding = '15px 25px';
+      toast.style.borderRadius = '8px';
+      toast.style.fontSize = '16px';
+      toast.style.textAlign = 'center';
+      toast.style.zIndex = '9999';
+      toast.style.boxShadow = '0 4px 6px rgba(0,0,0,0.2)';
+
+      toastContainer.appendChild(toast);
+
+      // Remove after 5 seconds
+      setTimeout(() => {
+        toast.remove();
+      }, 8000);
+
+      return true; // allow form submission
+    }

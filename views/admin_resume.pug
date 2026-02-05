@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h1.mb-4 Resume Management
+
+  .card
+    .card-body
+      if !resume
+        p.text-muted Please upload your resume here
+
+      form(
+        method="POST"
+        action="/admin/resume"
+        enctype="multipart/form-data"
+      )
+        .mb-3
+          label.form-label(for="resume") Upload Resume (PDF only)
+          input.form-control(
+            type="file"
+            name="resume"
+            id="resume"
+            accept="application/pdf"
+            required
+          )
+
+        button.btn.btn-primary.mt-3(type="submit")
+          | #{resume ? 'Submit' : 'Upload Resume'}
+
+  if resume
+    hr
+    h5 Uploaded Resume
+    a.btn.btn-outline-success(
+      href=resume.file
+      target="_blank"
+    ) View Resume

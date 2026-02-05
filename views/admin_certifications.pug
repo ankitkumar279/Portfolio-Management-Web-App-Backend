@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  .d-flex.justify-content-between.align-items-center.mb-4
+    h1 Certifications
+    a.btn.btn-success(href="/admin/certifications/new") + Add Certification
+
+  if certs.length
+    .row.row-cols-1.row-cols-md-2.g-4
+      each cert in certs
+        .col
+          .card.shadow
+            .card-body
+              h5.card-title= cert.title
+              p.mb-1 Year: #{cert.year}
+              p.mb-1 Provider: #{cert.provider}
+            
+            .card-footer.d-flex.justify-content-between
+              a.btn.btn-warning.btn-sm(href=`/admin/certifications/${cert._id}/edit`) Edit
+              form(method="POST", action=`/admin/certifications/${cert._id}?_method=DELETE`)
+                button.btn.btn-danger.btn-sm(type="submit") Delete
+  else
+    p.text-muted No certifications yet.
