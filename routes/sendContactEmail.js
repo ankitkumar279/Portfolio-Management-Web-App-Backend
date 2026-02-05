@@ -11,12 +11,17 @@ router.post('/', async (req, res) => {
 
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // MUST be false
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS, // App password
       },
     });
+
+    // 🔍 This will throw error if Gmail blocks it
+    await transporter.verify();
 
     const mailOptions = {
       from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
@@ -33,7 +38,7 @@ router.post('/', async (req, res) => {
     });
 
   } catch (err) {
-    console.error("Email error:", err);
+    console.error("EMAIL ERROR FULL:", err);
     return res.status(500).json({
       error: "Error sending message",
     });
