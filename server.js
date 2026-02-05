@@ -14,19 +14,19 @@ const adminContactRoutes = require('./routes/admin_contact');
 const adminSocialRoutes = require('./routes/admin_social');
 const adminRoutes = require('./routes/admin'); 
 const adminResumeRoutes = require('./routes/admin_resume'); 
+const sendContactEmail = require('./routes/sendContactEmail'); // <-- new route
 const authRoutes = require('./routes/auth');
 const apiRoutes = require('./routes/api');
 
 const app = express();
 
 // Middleware
-app.use(cors()); // allow frontend to fetch API
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 
 // Sessions
 app.use(
@@ -57,6 +57,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // API routes (JSON for frontend)
 app.use('/api', apiRoutes);
+app.use('/api/send-contact', sendContactEmail); // <-- new route
 
 // Auth routes (login/logout)
 app.use('/', authRoutes);
@@ -67,9 +68,7 @@ app.use('/admin/certifications', authRequired, adminCertRoutes);
 app.use('/admin/contact', authRequired, adminContactRoutes);
 app.use('/admin/social', authRequired, adminSocialRoutes);
 app.use('/admin/resume', authRequired, adminResumeRoutes);
-app.use('/admin', authRequired, adminRoutes); // projects, skills, dashboard
-
-
+app.use('/admin', authRequired, adminRoutes); 
 
 // Default admin dashboard
 app.get('/admin', authRequired, async (req, res) => {
@@ -90,6 +89,7 @@ app.get('/admin', authRequired, async (req, res) => {
     certCount 
   });
 });
+
 // Root redirect
 app.get('/', (req, res) => res.redirect('/login'));
 
