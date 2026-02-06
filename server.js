@@ -28,6 +28,11 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 // Sessions
 app.use(
   session({
@@ -59,10 +64,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/api', apiRoutes);
 app.use('/api/send-contact', sendContactEmail); 
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).send('OK');
-});
 
 
 // Auth routes (login/logout)
