@@ -57,7 +57,13 @@ app.set('views', path.join(__dirname, 'views'));
 
 // API routes (JSON for frontend)
 app.use('/api', apiRoutes);
-app.use('/api/send-contact', sendContactEmail); // <-- new route
+app.use('/api/send-contact', sendContactEmail); 
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 
 // Auth routes (login/logout)
 app.use('/', authRoutes);
